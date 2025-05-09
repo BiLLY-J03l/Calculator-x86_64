@@ -5,3 +5,6 @@ A calculator written in x86_64 assembly for linux
 - Compile calculator.asm using make
   
       - make
+  
+## EXECUTION
+- ![image](https://github.com/user-attachments/assets/13d6ef24-df8a-4e45-a338-5af519663c25)
