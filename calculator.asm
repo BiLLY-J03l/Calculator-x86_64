@@ -10,6 +10,8 @@ msg2 db "[+] Enter Second Number: ", 0x0
 len2 equ $-msg2
 msg3 db "[x] DIVISOR IS ZERO, DIVISION CAN'T BE DONE", 0xa , 0x0
 len3 equ $-msg3
+msg4 db "[x] INPUT IS NOT A VALID INTEGER!" , 0xa , 0x0
+len4 equ $-msg4
 input_len_1 equ 10
 input_len_2 equ 10
 new_line db 0xa
@@ -42,6 +44,7 @@ mov rsi , msg
 mov rdx , len
 call prints_output
 
+_READING_INPUT_:
 xor rax , rax
 ; PRINT FOR INPUT_1
 mov rdi , 1
@@ -61,7 +64,8 @@ xor rax , rax
 mov rdi , input_buf_1
 call str_to_int
 mov [input_q_1] , rax
-
+cmp rax , 0	;CHECK ERR (if it's not a valid integer)
+jz input_err
 xor rax , rax
 
 ; PRINT FOR INPUT_2
@@ -82,6 +86,8 @@ xor rax , rax
 mov rdi , input_buf_2
 call str_to_int
 mov [input_q_2] , rax
+cmp rax , 0	; CHECK ERR
+jz input_err
 
 ; PRINT BOTH INPUTS
 xor rax , rax
@@ -135,6 +141,8 @@ mov rdi , fmt_str6
 mov rsi , [remainder_q]
 call prints_fmt_output
 
+jmp _READING_INPUT_
+
 DONE:
 leave	;mov rsp,rbp / pop rbp
 ret
@@ -180,4 +188,14 @@ mov rsi , msg3
 mov rdx , len3
 call prints_output
 jmp DONE
+
+
+input_err:
+; PRINT ERROR MESSAGE THEN EXIT
+xor rax , rax
+mov rdi , 1
+mov rsi , msg4
+mov rdx , len4
+call prints_output
+jmp _READING_INPUT_
 
